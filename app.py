@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, jsonify
+import matplotlib
+matplotlib.use('Agg')  # Use a non-interactive backend
 import matplotlib.pyplot as plt
 import numpy as np
 import io
 import base64
+from matplotlib.colors import PowerNorm
 
 app = Flask(__name__)
 
@@ -10,25 +13,40 @@ def compute_mandelbrot(xmin, xmax, ymin, ymax, width, height, max_iter):
     x = np.linspace(xmin, xmax, width)
     y = np.linspace(ymin, ymax, height)
     X, Y = np.meshgrid(x, y)
-    Z = np.zeros_like(X)
-    C = X + 1j * Y
-    not_diverged = np.ones_like(C, bool)
+    Z = X + 1j * Y
+    C = Z.copy()
+    escaped = np.zeros(Z.shape, bool)
+    iteration = np.zeros(Z.shape, int)
+
     for i in range(max_iter):
-        Z[not_diverged] = Z[not_diverged] ** 2 + C[not_diverged]
-        not_diverged &= np.abs(Z) < 2
-    return not_diverged
+        # Suppress the ComplexWarning here
+        with np.errstate(all='ignore'):
+            Z[~escaped] = Z[~escaped] ** 2 + C[~escaped]
+        escaped |= np.abs(Z) > 2
+        iteration[escaped & (iteration == 0)] = i
+    return iteration.swapaxes(1,0)
 
 def plot_mandelbrot(xmin, xmax, ymin, ymax, width=800, height=600, max_iter=256):
-    escape = compute_mandelbrot(xmin, xmax, ymin, ymax, width, height, max_iter)
-    plt.imshow(escape.T, extent=[xmin, xmax, ymin, ymax], cmap='hot', origin='lower')
-    plt.axis('off')
-    buffer = io.BytesIO()
-    plt.savefig(buffer, format='png')
-    plt.close()
-    buffer.seek(0)
-    image_png = buffer.getvalue()
-    buffer.close()
-    return base64.b64encode(image_png).decode('utf-8')
+    mandelbrot_set = compute_mandelbrot(xmin, xmax, ymin, ymax, width, height, max_iter)
+    
+    fig, ax = plt.subplots()
+    
+    # Normalization and colormap
+    norm = PowerNorm(0.3)  # Adjust the exponent to control color scaling
+    cmap = plt.cm.viridis  # You can experiment with different colormaps
+
+    ax.imshow(mandelbrot_set, extent=[xmin, xmax, ymin, ymax], cmap=cmap, norm=norm)
+    ax.set_xlabel('Re')
+    ax.set_ylabel('Im')
+
+    # Save the plot to a BytesIO object
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    image_base64 = base64.b64encode(buf.getvalue()).decode('ascii')
+    buf.close()
+
+    return image_base64
 
 @app.route('/')
 def home():
