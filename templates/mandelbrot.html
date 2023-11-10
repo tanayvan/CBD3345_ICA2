@@ -2,16 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mandelbrot Set Viewer</title>
-    <style>
-        #mandelbrotCanvas {
-            border: 1px solid black;
-            cursor: pointer;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandelbrot Set Visualizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Mandelbrot Set Viewer</h1>
+    <h1>Mandelbrot Set Visualizer</h1>
     <img id="mandelbrotCanvas" src="" data-xmin="-2.0" data-xmax="1.0" data-ymin="-1.5" data-ymax="1.5" alt="Mandelbrot Set" />
     <script>
         document.addEventListener('DOMContentLoaded', function() {
