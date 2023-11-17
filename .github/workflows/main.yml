@@ -11,7 +11,7 @@ env:
 
 jobs:
   test:
-    runs-on: [self-hosted, Windows]
+    runs-on: [self-hosted, linux]
     strategy:
       matrix:
         python-version: ["3.8"]
