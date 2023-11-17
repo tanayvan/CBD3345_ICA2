@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Installing Python Dependencies
-        uses: ./.github/actions/intalling-python-dependencies
+        uses: ./.github/actions/installing-python-dependencies
 
       - name: Test with pytest
         run: |
