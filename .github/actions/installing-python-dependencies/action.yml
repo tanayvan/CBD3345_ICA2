@@ -4,6 +4,6 @@ runs:
   using: "composite"
   steps:
     - run: python -m pip install --upgrade pip
-      shell: powershell
+      shell: bash
     - run: pip install Flask matplotlib numpy pytest
-      shell: powershell
+      shell: bash
