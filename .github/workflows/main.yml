@@ -22,16 +22,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install Flask matplotlib numpy pytest
-          
-      - name: oryks code coverage action
-        id: selftest
-        uses: lyleokoth/pytest-coverage-ytest@v1.0.0
-        with:
-         codedirectory: /
-         testdirectory: tests/
+
       - name: Install dependencies 1
         run: |
-          ls && cd tests && ls
+          pytest test_app.py
+
           
       - name: Store Test Reports
         if: always()
