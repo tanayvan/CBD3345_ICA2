@@ -31,7 +31,8 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest test_app.py --doctest-modules --junitxml=tests/test-results-${{ matrix.python-version }}.xml > log.txt 
+          pytest test_app.py --doctest-modules --junitxml=tests/test-results-${{ matrix.python-version }}.xml > tests/log1.txt 
+          pytest test_app.py  > tests/log.txt 
       - name: Upload pytest test results
         uses: actions/upload-artifact@v3
         with:
