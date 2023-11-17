@@ -29,6 +29,10 @@ jobs:
         with:
          codedirectory: /
          testdirectory: tests/
+      - name: Install dependencies 1
+        run: |
+          ls && cd tests && ls
+          
       - name: Store Test Reports
         if: always()
         uses: actions/upload-artifact@v2
