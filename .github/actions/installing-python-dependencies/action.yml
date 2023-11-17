@@ -4,6 +4,4 @@ runs:
   using: "composite"
   steps:
     - run: python -m pip install --upgrade pip
-      shell: pwsh
     - run: pip install Flask matplotlib numpy pytest
-      shell: pwsh
