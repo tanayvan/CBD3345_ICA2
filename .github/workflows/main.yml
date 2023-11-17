@@ -24,7 +24,6 @@ jobs:
         with:
           python-version: 3.8 # replace 'x' with your desired Python version
 
-      - name: Install dependencies
       - uses: actions/checkout@v2
       - uses: ./.github/actions/installing-python-dependencies
 
