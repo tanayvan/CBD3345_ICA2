@@ -24,8 +24,11 @@ jobs:
         with:
           python-version: 3.8 # replace 'x' with your desired Python version
 
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/intalling-python-dependencies
+      - name: Checkout For Custom Action
+        uses: actions/checkout@v2
+
+      - name: Installing Python Dependencies
+        uses: ./.github/actions/intalling-python-dependencies
 
       - name: Test with pytest
         run: |

@@ -1,5 +1,5 @@
-name: "Installing Python Dependencies"
-description: "It will install python library"
+name: Installing Python Dependencies
+description: It will install python library
 runs:
   using: "composite"
   steps:
