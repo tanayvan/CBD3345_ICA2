@@ -10,15 +10,15 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8"]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.x  # replace 'x' with your desired Python version
+          python-version: 3.8  # replace 'x' with your desired Python version
 
       - name: Install dependencies
         run: |
