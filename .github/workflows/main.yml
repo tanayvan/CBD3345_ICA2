@@ -8,7 +8,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -23,14 +25,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install Flask matplotlib numpy pytest
 
-      - name: Install dependencies 1
-        run: |
-          pytest test_app.py
-
-          
-      - name: Store Test Reports
-        if: always()
-        uses: actions/upload-artifact@v2
+      - name: Test with pytest
+        run: pytest test_app.py --doctest-modules --junitxml=tests/test-results-${{ matrix.python-version }}.xml
+      - name: Upload pytest test results
+        uses: actions/upload-artifact@v3
         with:
-          name: test-reports
-          path: tests/  # adjust the path if needed
+          name: pytest-results-${{ matrix.python-version }}
+          path: tests/test-results-${{ matrix.python-version }}.xml
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
