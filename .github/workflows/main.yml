@@ -69,4 +69,22 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-    
+  integration-test:
+    runs-on: ubuntu-latest
+    services:
+      my-container:
+        image: ghcr.io/tanayvan/cbd3345_ica2:main
+        ports:
+          - 5000:5000
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Wait for the service to be ready
+        run: |
+          echo "Waiting for the service to be ready..."
+          while ! nc -z localhost 5000; do sleep 1; done
+          echo "Service is ready!"
+      - name: Run integration tests
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d '{"xmin": -2, "xmax": 2, "ymin": -2, "ymax": 2}' http://localhost:5000/plot
