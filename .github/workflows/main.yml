@@ -25,11 +25,11 @@ jobs:
 
       - name: Run Unit Tests
         run: |
-          python -m pytest tests/  # adjust the path if needed
+          pytest test_app.py  --junitxml=tests/pytest.xml --cov-report=term-missing:skip-covered --cov=app tests/ | tee tests/pytest-coverage.txt
 
       - name: Store Test Reports
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: test-reports
-          path: tests/reports  # adjust the path if needed
+          path: tests/  # adjust the path if needed
