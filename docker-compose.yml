@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   webapp:
@@ -8,10 +8,10 @@ services:
     ports:
       - "8000:5000"
     environment:
-      FLASK_APP: app.py  # Replace with your actual app file
-      REDIS_URL: redis://redis:6379/0  # Use the service name "redis" for the hostname
+      FLASK_APP: app.py # Replace with your actual app file
+      REDIS_URL: redis://redis:6379/0 # Use the service name "redis" for the hostname
 
   redis:
-    image: "redis:latest"
+    image: redislabs/redismod
     ports:
-      - '6379:6379'
+      - "6379:6379"
